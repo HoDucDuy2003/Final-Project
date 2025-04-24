@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Fire Wizzard
   m_EditorClassIdentifier: 
   prefab: {fileID: 7694065919687656627, guid: 26f713449d9ab3e4391a3d045accd48f, type: 3}
+  attackProjectile: {fileID: 1597069992993035993, guid: 85891e03d6c87514a98a053eaf190895, type: 3}
   type1: {fileID: 11400000, guid: 3c4644fba6daec0469d795ae15fcc92e, type: 2}
   type2: {fileID: 11400000, guid: 7f6e8df42876b24448eb70be660c3fac, type: 2}
   ui_Name: Fire Wizard
@@ -20,4 +21,4 @@ MonoBehaviour:
   display_cost: {fileID: -1447562093, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   health: 150
   attackDamage: 20
-  attackRange: 5
+  attackRange: 10

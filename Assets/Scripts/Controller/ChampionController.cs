@@ -47,7 +47,7 @@ public class ChampionController : MonoBehaviour
     [HideInInspector]
     private bool isAttacking = false;
     [HideInInspector]
-    private bool isDead = false;
+    public bool isDead = false;
 
     private bool isInCombat = false;
     private float combatTimer = 0;
@@ -120,7 +120,6 @@ public class ChampionController : MonoBehaviour
                         float distance = Vector3.Distance(this.transform.position, target.transform.position);
                         if (distance < champion.attackRange)
                         {
-                            Debug.Log(champion.attackRange);
                             DoAttack();
                         }
                         else
@@ -162,6 +161,8 @@ public class ChampionController : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
+        maxHealth = champion.health * lvl;
+        currentHealth = champion.health * lvl;
         isDead = false;
         isInCombat = false;
         target = null;
@@ -304,7 +305,45 @@ public class ChampionController : MonoBehaviour
         }
 
     }
+    public void OnAttackAnimationFinished()
+    {
+        isAttacking = false;
 
+        if(target != null)
+        {
+            ChampionController targetChampion = target.GetComponent<ChampionController>();
+
+            List<ChampionBonus> activeBonus = null;
+
+            if (teamID == TEAM_PLAYER)
+            {
+                activeBonus = gamePlayController.activeBonusList;
+            }
+            else if (teamID == TEAM_AI)
+            {
+                activeBonus = aIEnemy.activeBonusList;
+            }
+
+            float d = 0;
+
+            foreach(ChampionBonus c in activeBonus)
+            {
+                d += c.ApplyOnAttack(this, targetChampion);
+            }
+
+            bool isTargetDead = targetChampion.OnGotHit(d + currentDamage);
+
+            if (isTargetDead) TryAttackNewTarget();
+
+            if(champion.attackProjectile != null && projectileStart != null)
+            {
+                GameObject projectile = Instantiate(champion.attackProjectile);
+                projectile.transform.position = projectileStart.transform.position;
+
+                projectile.GetComponent<Projectile>().Init(target);
+            }
+        }
+    }
     public void UpgradeLevel()
     {
         lvl++;
@@ -372,10 +411,14 @@ public class ChampionController : MonoBehaviour
         }
 
         currentHealth -= d;
+
         if (currentHealth <= 0)
         {
             this.gameObject.SetActive(false);
             isDead = true;
+
+            aIEnemy.OnChampionDeath();
+            gamePlayController.OnChampionDeath();
         }
 
         worldsCanvasController.AddDamageText(this.transform.position + new Vector3(0, 2.5f, 0), d);

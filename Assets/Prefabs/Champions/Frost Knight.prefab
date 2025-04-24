@@ -8652,6 +8652,9 @@ MonoBehaviour:
   gridPositionZ: 0
   teamID: 0
   lvl: 1
+  maxHealth: 0
+  currentHealth: 0
+  currentDamage: 0
   champion: {fileID: 0}
 --- !u!195 &-5492506548520598951
 NavMeshAgent:

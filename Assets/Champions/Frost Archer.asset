@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Frost Archer
   m_EditorClassIdentifier: 
   prefab: {fileID: 6619147471966085893, guid: a7d695c7c921d6546b374f5a3cb1a3db, type: 3}
+  attackProjectile: {fileID: 8898893296069002340, guid: c14aa66cc778e414187125618135ae6d, type: 3}
   type1: {fileID: 11400000, guid: d190cf551b5d25645b384a58df4154a0, type: 2}
   type2: {fileID: 11400000, guid: f3e567881c605d247b05775a39e704ed, type: 2}
   ui_Name: Frost Archer
@@ -20,4 +21,4 @@ MonoBehaviour:
   display_cost: {fileID: 312240993, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   health: 200
   attackDamage: 25
-  attackRange: 3
+  attackRange: 12

@@ -5,6 +5,8 @@ public class Champion : ScriptableObject
 {
     public GameObject prefab;
 
+    public GameObject attackProjectile;
+
     public ChampionType type1;
 
     public ChampionType type2;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Nature Wizard
   m_EditorClassIdentifier: 
   prefab: {fileID: 6285827556954042335, guid: a0747b0ddae085443a2a2f1f7004f221, type: 3}
+  attackProjectile: {fileID: 2047516437370248868, guid: e6736dc1205bf254dbdaa1d89efce89b, type: 3}
   type1: {fileID: 11400000, guid: 200e54a10084f3941a1f2a3354741fb1, type: 2}
   type2: {fileID: 11400000, guid: 7f6e8df42876b24448eb70be660c3fac, type: 2}
   ui_Name: Nature Wizard
@@ -20,4 +21,4 @@ MonoBehaviour:
   display_cost: {fileID: -1447562093, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   health: 175
   attackDamage: 15
-  attackRange: 3
+  attackRange: 9

@@ -318,6 +318,18 @@ public class GamePlayController : MonoBehaviour
                     }
                 }
             }
+
+            activeBonusList = new List<ChampionBonus>();
+
+            foreach(KeyValuePair<ChampionType, int> m in championTypeCount)
+            {
+                ChampionBonus championBonus = m.Key.championBonus;
+
+                if(m.Value >= championBonus.championCount)
+                {
+                    activeBonusList.Add(championBonus);
+                }
+            }
         }
     }
 
@@ -405,7 +417,6 @@ public class GamePlayController : MonoBehaviour
 
         uiController.UpdateUI();
     }
-
     // Future: will optimize this function
     private void AutoPlaceChampionsOnGrid()
     {
@@ -542,6 +553,9 @@ public class GamePlayController : MonoBehaviour
 
                 }
             }
+
+            if (IsAllChampionDead())
+                EndRound();
         }
         else if(currentGameStage == GameStage.Combat)
         {
@@ -562,7 +576,6 @@ public class GamePlayController : MonoBehaviour
 
         }
     }
-
     private void ResetChampions()
     {
         for (int x = 0; x < Map.hexMapSizeX; x++)
@@ -581,5 +594,36 @@ public class GamePlayController : MonoBehaviour
 
             }
         }
+    }
+
+    public void OnChampionDeath()
+    {
+        bool allDead = IsAllChampionDead();
+        if(allDead)
+            EndRound();
+    }
+    private bool IsAllChampionDead()
+    {
+        int championDead = 0;
+        int championCount = 0;
+        for (int x = 0; x < Map.hexMapSizeX; x++)
+        {
+            for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+            {
+                if (gridChampionsArray[x, z] != null)
+                {
+                    ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
+                    championCount++;
+                    if (championController.isDead) championDead++;
+
+                }
+            }
+        }
+
+        if (championDead == championCount++) 
+            return true;
+
+        return false;   
+        
     }
 }

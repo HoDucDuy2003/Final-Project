@@ -15,9 +15,9 @@ MonoBehaviour:
   displayName: Nature
   icon: {fileID: 373657541, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   championBonus:
-    championCount: 2
+    championCount: 4
     championBonusType: 3
     bonusTarget: 0
-    bonusValue: 0
-    duration: 0
-    effectPrefab: {fileID: 0}
+    bonusValue: 5
+    duration: 1
+    effectPrefab: {fileID: 8205487118361164332, guid: 50be24449be05a14a83ac83bd78be2da, type: 3}

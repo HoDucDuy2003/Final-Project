@@ -6,8 +6,8 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float duration;
-    [SerializeField] private GameObject target;
-    [SerializeField] private bool isMoving = false;
+    private GameObject target;
+    private bool isMoving = false;
     public void Init(GameObject _target)
     {
         target = _target;

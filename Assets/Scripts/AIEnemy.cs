@@ -56,6 +56,7 @@ public class AIEnemy : MonoBehaviour
                 }
             }
 
+            
             ResetChampions();
             AddRandomChampion();
         }
@@ -148,6 +149,28 @@ public class AIEnemy : MonoBehaviour
 
         //CalculateBonuses();
     }
+    public void Restart()
+    {
+        for (int x = 0; x < Map.hexMapSizeX; x++)
+        {
+            for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+            {
+                //there is a champion
+                if (gridChampionsArray[x, z] != null)
+                {
+                    //get character
+                    ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
+
+                    Destroy(championController.gameObject);
+                    gridChampionsArray[x, z] = null;
+
+                }
+
+            }
+        }
+
+        AddRandomChampion();
+    }
     private void ResetChampions()
     {
         for (int x = 0; x < Map.hexMapSizeX; x++)
@@ -162,12 +185,41 @@ public class AIEnemy : MonoBehaviour
 
                     //set position and rotation
                     championController.Reset();
-
-
-
                 }
 
             }
         }
+    }
+    public void OnChampionDeath()
+    {
+        bool allDead = IsAllChampionDeath();
+        if (allDead)
+            gamePlayController.EndRound();
+    }
+    private bool IsAllChampionDeath()
+    {
+
+        int championDead = 0;
+        int championCount = 0;
+        for (int x = 0; x < Map.hexMapSizeX; x++)
+        {
+            for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
+            {
+                if (gridChampionsArray[x, z] != null)
+                {
+                    ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
+                    championCount++;
+                    if (!championController.isDead) return false;
+                    else championDead++;
+
+                }
+            }
+        }
+        Debug.Log(championDead);
+        if (championDead == championCount++)
+            return true;
+
+        return false;
+
     }
 }

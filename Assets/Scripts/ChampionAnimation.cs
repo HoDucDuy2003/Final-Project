@@ -37,7 +37,7 @@ public class ChampionAnimation : MonoBehaviour
     {
         animator.SetBool("isAttacking", false);
 
-        //championController.OnAttackAnimationFinished();
+        championController.OnAttackAnimationFinished();
 
         Debug.Log("attack anim finished");
 

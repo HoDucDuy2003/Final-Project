@@ -18,6 +18,6 @@ MonoBehaviour:
     championCount: 4
     championBonusType: 2
     bonusTarget: 1
-    bonusValue: 0
-    duration: 0
-    effectPrefab: {fileID: 0}
+    bonusValue: 15
+    duration: 1.5
+    effectPrefab: {fileID: 7519005589694912038, guid: 3b2293f32fdde314aaf20f7bbeb003b9, type: 3}

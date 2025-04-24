@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Nature Archer
   m_EditorClassIdentifier: 
   prefab: {fileID: 7335760998143173694, guid: a78cdd60c8f7c5a44ac65db50df6b8fa, type: 3}
+  attackProjectile: {fileID: 517170212901868865, guid: 61d66d2f4311e6341bff4d93a7ae93f8, type: 3}
   type1: {fileID: 11400000, guid: f3e567881c605d247b05775a39e704ed, type: 2}
   type2: {fileID: 11400000, guid: 200e54a10084f3941a1f2a3354741fb1, type: 2}
   ui_Name: Nature Archer
@@ -20,4 +21,4 @@ MonoBehaviour:
   display_cost: {fileID: -1700949939, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   health: 125
   attackDamage: 12
-  attackRange: 3
+  attackRange: 7

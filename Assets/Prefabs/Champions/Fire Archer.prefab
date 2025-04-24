@@ -6456,13 +6456,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelupEffectPrefab: {fileID: 6022893094628638925, guid: 3e052aff88b4eeb4da8c715d215dec1f, type: 3}
-  projectileStart: {fileID: 0}
+  projectileStart: {fileID: 703947528}
   gridType: 0
   gridPositionX: 0
   gridPositionZ: 0
   teamID: 0
   lvl: 1
+  maxHealth: 0
+  currentHealth: 0
+  currentDamage: 0
   champion: {fileID: 0}
+  isDead: 0
 --- !u!114 &4544310325879595937
 MonoBehaviour:
   m_ObjectHideFlags: 0
