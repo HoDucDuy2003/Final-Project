@@ -24,10 +24,14 @@ public class GamePlayController : MonoBehaviour
     public GameObject[,] gridChampionsArray;
 
     public GameStage currentGameStage;
-    [SerializeField] private float timer = 0;
+    [SerializeField] private float timer;
 
-    [SerializeField] private int PreparationStageDuration = 20;
-    [SerializeField] private int CombatStageDuration = 40;
+    [SerializeField] private int PreparationStageDuration;
+    [SerializeField] private int CombatStageDuration;
+    public int baseGoldIncome = 5;
+    public bool isWinBattle;
+    public int streak = 0;
+    public int loseStreak= 0; 
 
     [HideInInspector]
     public int timerDisplay = 0;
@@ -35,6 +39,8 @@ public class GamePlayController : MonoBehaviour
     [HideInInspector]
     public int currentChampionCount = 0;
     public int currentGold = 6;
+    [HideInInspector]
+    public int currentHP = 100; // HP player
 
     public Dictionary<ChampionType, int> championTypeCount;
     public List<ChampionBonus> activeBonusList;
@@ -554,8 +560,9 @@ public class GamePlayController : MonoBehaviour
                 }
             }
 
-            if (IsAllChampionDead())
+            if (IsAllChampionDead()) // losing if dont buy any champion to place into grid
                 EndRound();
+                
         }
         else if(currentGameStage == GameStage.Combat)
         {
@@ -570,8 +577,11 @@ public class GamePlayController : MonoBehaviour
                 TryUpgradeChampion(gameData.championArray[i]);
             }
 
-            uiController.UpdateUI();
 
+            UpdateStreak();
+            currentGold += CaculateIncome();
+            
+            uiController.UpdateUI();
             championShop.RefreshShop(true);
 
         }
@@ -599,8 +609,12 @@ public class GamePlayController : MonoBehaviour
     public void OnChampionDeath()
     {
         bool allDead = IsAllChampionDead();
-        if(allDead)
+        if (allDead)
+        {
+            isWinBattle = false;
             EndRound();
+        }
+            
     }
     private bool IsAllChampionDead()
     {
@@ -615,15 +629,50 @@ public class GamePlayController : MonoBehaviour
                     ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
                     championCount++;
                     if (championController.isDead) championDead++;
+                    //if (!championController.isDead) return false;
+                    //else championDead++;
 
                 }
             }
         }
-
         if (championDead == championCount++) 
             return true;
 
         return false;   
         
+    }
+
+    private int CaculateIncome()
+    {
+        int income = 0;
+        //int bank = currentGold / 10;
+
+        income += baseGoldIncome;
+        //income += bank;
+
+        if (streak >= 2) income += Mathf.Min(streak - 1, 3);  // +1 gold at 2 wins, +2 at 3, +3 at 4+
+        if (loseStreak >= 2) income += Mathf.Min(loseStreak - 1, 3); // +1 gold at 2 losses, +2 at 3, +3 at 4+
+
+        return income;
+    }
+    private void UpdateStreak()
+    {
+        if (isWinBattle)
+        {
+            streak++;
+            loseStreak = 0; // Reset lose streak on win
+            Debug.Log($"Win streak updated: {streak}");
+        }
+        else
+        {
+            streak = 0; // Reset win streak on loss
+            loseStreak++;
+            Debug.Log($"Lose streak updated: {loseStreak}");
+        }
+    }
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        isWinBattle = false;
     }
 }

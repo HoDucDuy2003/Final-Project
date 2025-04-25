@@ -17,12 +17,15 @@ public class UIController : MonoBehaviour
 
     public GameObject BonusContainer;
     public GameObject placementText;
+    public GameObject winStreakUI;
+    public GameObject loseStreakUI;
 
 
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI championCountText;
-
+    public TextMeshProUGUI streakWinText;
+    public TextMeshProUGUI streakLoseText;
 
 
     public void OnChamponClicked()
@@ -39,6 +42,21 @@ public class UIController : MonoBehaviour
     {
         timerText.text = gamePlayController.timerDisplay.ToString();
     }
+    public void UpdateStreakText()
+    {
+        if(gamePlayController.streak > 0)
+        {
+            streakWinText.text = gamePlayController.streak.ToString();
+            winStreakUI.SetActive(true);
+            loseStreakUI.SetActive(false);
+        }
+        else if(gamePlayController.loseStreak > 0)
+        {
+            streakLoseText.text = gamePlayController.streak.ToString();
+            winStreakUI.SetActive(false);
+            loseStreakUI.SetActive(true);
+        }
+    }
     public void SetTimerTextActive(bool b)
     {
         timerText.gameObject.SetActive(b);
@@ -48,10 +66,10 @@ public class UIController : MonoBehaviour
     {
         goldText.text = gamePlayController.currentGold.ToString();
         championCountText.text = gamePlayController.currentChampionCount.ToString() + " / " + gamePlayController.currentChampionLimit.ToString();
-
+        UpdateStreakText();
 
         //hide all bonus trait panels
-        foreach(GameObject panel in bonusTraitPanel)
+        foreach (GameObject panel in bonusTraitPanel)
         {
             panel.SetActive(false);
         }

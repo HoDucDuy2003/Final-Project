@@ -194,7 +194,10 @@ public class AIEnemy : MonoBehaviour
     {
         bool allDead = IsAllChampionDeath();
         if (allDead)
+        {
+            gamePlayController.isWinBattle = true;
             gamePlayController.EndRound();
+        }  
     }
     private bool IsAllChampionDeath()
     {
@@ -209,13 +212,10 @@ public class AIEnemy : MonoBehaviour
                 {
                     ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
                     championCount++;
-                    if (!championController.isDead) return false;
-                    else championDead++;
-
+                    if (championController.isDead) championDead++;
                 }
             }
         }
-        Debug.Log(championDead);
         if (championDead == championCount++)
             return true;
 

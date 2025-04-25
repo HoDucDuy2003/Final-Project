@@ -37,7 +37,6 @@ public class Projectile : MonoBehaviour
 
             if(distance < 0.2f)
             {
-                Debug.Log("hit target");
 
                 this.transform.parent = target.transform;
 

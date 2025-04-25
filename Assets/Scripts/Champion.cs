@@ -6,12 +6,11 @@ public class Champion : ScriptableObject
     public GameObject prefab;
 
     public GameObject attackProjectile;
+    public string ui_Name;
 
     public ChampionType type1;
 
     public ChampionType type2;
-
-    public string ui_Name;
 
     public int cost;
 
