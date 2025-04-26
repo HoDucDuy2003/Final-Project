@@ -15,7 +15,7 @@ public class AIEnemy : MonoBehaviour
     public List<ChampionBonus> activeBonusList;
 
     ///The damage that player takes when losing a round
-    public int championDamage = 2;
+    public int TakeDamageWhenLose = 2;
 
     public void OnMapReady()
     {

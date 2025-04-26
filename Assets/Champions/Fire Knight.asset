@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Fire Knight
   m_EditorClassIdentifier: 
   prefab: {fileID: 7344935845212841428, guid: 7b25e4e7c4d8d664b87ea65dab7ffa7e, type: 3}
+  attackProjectile: {fileID: 0}
+  ui_Name: Fire Knight
   type1: {fileID: 11400000, guid: 3c4644fba6daec0469d795ae15fcc92e, type: 2}
   type2: {fileID: 11400000, guid: 33223db9cedb8c045990cb7a3b0144a3, type: 2}
-  ui_Name: Fire Knight
   cost: 2
   display_cost: {fileID: -1700949939, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   health: 300
   attackDamage: 10
-  attackRange: 1
+  attackRange: 2

@@ -18,8 +18,6 @@ public class GamePlayController : MonoBehaviour
 
     [HideInInspector]
     public GameObject[] ownChampionInventoryArray;
-    //[HideInInspector]
-    //public GameObject[] opponentChampionInventoryArray;
     [HideInInspector]
     public GameObject[,] gridChampionsArray;
 
@@ -35,7 +33,7 @@ public class GamePlayController : MonoBehaviour
 
     [HideInInspector]
     public int timerDisplay = 0;
-    public int currentChampionLimit = 3;
+    public int currentChampionLimit;
     [HideInInspector]
     public int currentChampionCount = 0;
     public int currentGold = 6;

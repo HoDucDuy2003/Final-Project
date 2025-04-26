@@ -7020,7 +7020,7 @@ MonoBehaviour:
   streak: 0
   loseStreak: 0
   timerDisplay: 0
-  currentChampionLimit: 3
+  currentChampionLimit: 1
   currentChampionCount: 0
   currentGold: 500
   currentHP: 100
