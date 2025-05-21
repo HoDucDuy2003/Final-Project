@@ -14,11 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 6619147471966085893, guid: a7d695c7c921d6546b374f5a3cb1a3db, type: 3}
   attackProjectile: {fileID: 8898893296069002340, guid: c14aa66cc778e414187125618135ae6d, type: 3}
+  ui_Name: Frost Archer
   type1: {fileID: 11400000, guid: d190cf551b5d25645b384a58df4154a0, type: 2}
   type2: {fileID: 11400000, guid: f3e567881c605d247b05775a39e704ed, type: 2}
-  ui_Name: Frost Archer
   cost: 4
   display_cost: {fileID: 312240993, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
-  health: 200
-  attackDamage: 25
   attackRange: 12
+  maxStarLevel: 3
+  starLevelStats:
+  - health: 160
+    attackDamage: 20
+    sellPrice: 4
+  - health: 200
+    attackDamage: 25
+    sellPrice: 8
+  - health: 400
+    attackDamage: 40
+    sellPrice: 24
+  sfxSettings:
+    initSFX: {fileID: 8300000, guid: ea42680cb83e22b47880fd03f45f88d7, type: 3}
+    upgradeSFX: {fileID: 0}

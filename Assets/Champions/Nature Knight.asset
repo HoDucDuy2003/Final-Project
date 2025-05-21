@@ -14,11 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8687533809271181728, guid: bf570dce40d2dc44ba0c18697048ea20, type: 3}
   attackProjectile: {fileID: 0}
+  ui_Name: Nature Knight
   type1: {fileID: 11400000, guid: 200e54a10084f3941a1f2a3354741fb1, type: 2}
   type2: {fileID: 11400000, guid: 33223db9cedb8c045990cb7a3b0144a3, type: 2}
-  ui_Name: Nature Knight
   cost: 1
   display_cost: {fileID: -926132597, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
-  health: 100
-  attackDamage: 5
   attackRange: 2
+  maxStarLevel: 3
+  starLevelStats:
+  - health: 115
+    attackDamage: 5
+    sellPrice: 1
+  - health: 130
+    attackDamage: 7
+    sellPrice: 2
+  - health: 160
+    attackDamage: 10
+    sellPrice: 4
+  sfxSettings:
+    initSFX: {fileID: 8300000, guid: 5794b6e42f16bb74889ce69c41582bfb, type: 3}
+    upgradeSFX: {fileID: 0}

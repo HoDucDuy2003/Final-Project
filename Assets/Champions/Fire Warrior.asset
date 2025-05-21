@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00bb3f9344471bf49b65586040118f5a, type: 3}
-  m_Name: Frost Knight
+  m_Name: Fire Warrior
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8630654999615776707, guid: 43c0dbeff2d1efe48995fbcc4bb88207, type: 3}
+  prefab: {fileID: 738693484911837706, guid: b7481ecf41fe11a469f2eeccf8fcdfd8, type: 3}
   attackProjectile: {fileID: 0}
-  ui_Name: Frost Knight
-  type1: {fileID: 11400000, guid: d190cf551b5d25645b384a58df4154a0, type: 2}
+  ui_Name: Fire Warrior
+  type1: {fileID: 11400000, guid: 3c4644fba6daec0469d795ae15fcc92e, type: 2}
   type2: {fileID: 11400000, guid: 33223db9cedb8c045990cb7a3b0144a3, type: 2}
-  cost: 5
-  display_cost: {fileID: 1497344408, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
+  cost: 1
+  display_cost: {fileID: -926132597, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
   attackRange: 2
   maxStarLevel: 3
   starLevelStats:
-  - health: 200
-    attackDamage: 20
-    sellPrice: 5
-  - health: 350
-    attackDamage: 30
-    sellPrice: 10
-  - health: 1000
-    attackDamage: 200
-    sellPrice: 30
+  - health: 100
+    attackDamage: 6
+    sellPrice: 1
+  - health: 125
+    attackDamage: 8
+    sellPrice: 2
+  - health: 175
+    attackDamage: 12
+    sellPrice: 4
   sfxSettings:
-    initSFX: {fileID: 8300000, guid: b91cb95964312ba4e8a82565c63896e4, type: 3}
+    initSFX: {fileID: 8300000, guid: 8125374756cb07141b80cf75cec7ef0c, type: 3}
     upgradeSFX: {fileID: 0}

@@ -14,11 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5364804981758500472, guid: 2f67e8080b1549c4faa35f4ca869301a, type: 3}
   attackProjectile: {fileID: 504887762509234602, guid: e94f8a8182f6ca34bbea07f54c94b04c, type: 3}
+  ui_Name: Frost Wizard
   type1: {fileID: 11400000, guid: d190cf551b5d25645b384a58df4154a0, type: 2}
   type2: {fileID: 11400000, guid: 7f6e8df42876b24448eb70be660c3fac, type: 2}
-  ui_Name: Frost Wizard
   cost: 3
   display_cost: {fileID: -1447562093, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
-  health: 125
-  attackDamage: 20
   attackRange: 9
+  maxStarLevel: 3
+  starLevelStats:
+  - health: 125
+    attackDamage: 15
+    sellPrice: 3
+  - health: 150
+    attackDamage: 18
+    sellPrice: 6
+  - health: 300
+    attackDamage: 25
+    sellPrice: 12
+  sfxSettings:
+    initSFX: {fileID: 8300000, guid: 1f51fbe9ebfca3e4790e750f9bf02d3c, type: 3}
+    upgradeSFX: {fileID: 0}

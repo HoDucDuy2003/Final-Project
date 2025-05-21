@@ -19,6 +19,18 @@ MonoBehaviour:
   type2: {fileID: 11400000, guid: 33223db9cedb8c045990cb7a3b0144a3, type: 2}
   cost: 2
   display_cost: {fileID: -1700949939, guid: 7e2303426b866a44589551cfe892cf7c, type: 3}
-  health: 300
-  attackDamage: 10
   attackRange: 2
+  maxStarLevel: 3
+  starLevelStats:
+  - health: 200
+    attackDamage: 10
+    sellPrice: 2
+  - health: 250
+    attackDamage: 14
+    sellPrice: 4
+  - health: 350
+    attackDamage: 18
+    sellPrice: 8
+  sfxSettings:
+    initSFX: {fileID: 8300000, guid: 75a09c0016caec143b3d41bf37959b9d, type: 3}
+    upgradeSFX: {fileID: 0}
