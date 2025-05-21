@@ -21,3 +21,4 @@ MonoBehaviour:
     bonusValue: 5
     duration: 1
     effectPrefab: {fileID: 8205487118361164332, guid: 50be24449be05a14a83ac83bd78be2da, type: 3}
+  Description: Healing allies

@@ -21,3 +21,4 @@ MonoBehaviour:
     bonusValue: 20
     duration: 0
     effectPrefab: {fileID: 0}
+  Description: Decrease damage taken

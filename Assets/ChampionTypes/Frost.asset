@@ -21,3 +21,4 @@ MonoBehaviour:
     bonusValue: 15
     duration: 1.5
     effectPrefab: {fileID: 7519005589694912038, guid: 3b2293f32fdde314aaf20f7bbeb003b9, type: 3}
+  Description: 'Freeze one enemy in '

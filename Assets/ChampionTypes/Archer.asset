@@ -21,3 +21,4 @@ MonoBehaviour:
     bonusValue: 2
     duration: 0
     effectPrefab: {fileID: 0}
+  Description: Increase damage for archer
