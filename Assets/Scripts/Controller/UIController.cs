@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -15,56 +16,64 @@ public class UIController : MonoBehaviour
     public GameObject[] championsFrameArray;
     public GameObject[] bonusTraitPanel;
 
-    public GameObject BonusContainer;
-    public GameObject placementText;
-    public GameObject winStreakUI;
-    public GameObject loseStreakUI;
+    public GameObject bonusContainer;
+    [SerializeField] private GameObject placementText;
+    [SerializeField] private GameObject winStreakUI;
+    [SerializeField] private GameObject loseStreakUI;
+    [SerializeField] private GameObject shop;
+    [SerializeField] private GameObject gold;
+    public GameObject restartButton;
+    [SerializeField] private  Button btnModeGame;
+    [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject sellPanel;
 
 
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI goldText;
+    public TextMeshProUGUI hpText;
     public TextMeshProUGUI championCountText;
     public TextMeshProUGUI streakWinText;
     public TextMeshProUGUI streakLoseText;
 
 
-    public void OnChamponClicked()
-    {
-        string name = EventSystem.current.currentSelectedGameObject.transform.parent.name;
 
-        string defaultName = "champion container ";
-        int championFrameIndex = int.Parse(name.Substring(defaultName.Length, 1));
-
-        championShop.OnChampionFrameClicked(championFrameIndex);
-
-    }
     public void UpdateTimerText()
     {
         timerText.text = gamePlayController.timerDisplay.ToString();
     }
     public void UpdateStreakText()
     {
-        if(gamePlayController.streak > 0)
+        if (gamePlayController.streak > 0)
         {
             streakWinText.text = gamePlayController.streak.ToString();
             winStreakUI.SetActive(true);
             loseStreakUI.SetActive(false);
         }
-        else if(gamePlayController.loseStreak > 0)
+        else if (gamePlayController.loseStreak > 0)
         {
-            streakLoseText.text = gamePlayController.streak.ToString();
+            streakLoseText.text = gamePlayController.loseStreak.ToString();
             winStreakUI.SetActive(false);
             loseStreakUI.SetActive(true);
         }
     }
-    public void SetTimerTextActive(bool b)
+    public void SetActive(bool b)
     {
         timerText.gameObject.SetActive(b);
         placementText.SetActive(b);
+        btnModeGame.interactable = b;
+    }
+    private void SetHPText()
+    {
+        hpText.text = "HP " + gamePlayController.Player_HP.ToString();
+        if (gamePlayController.Player_HP <= 0)
+        {
+            hpText.text = "HP 0";
+        }
     }
     public void UpdateUI()
     {
         goldText.text = gamePlayController.currentGold.ToString();
+        SetHPText();
         championCountText.text = gamePlayController.currentChampionCount.ToString() + " / " + gamePlayController.currentChampionLimit.ToString();
         UpdateStreakText();
 
@@ -74,14 +83,17 @@ public class UIController : MonoBehaviour
             panel.SetActive(false);
         }
 
-        if(gamePlayController.championTypeCount != null)
+        ShowBonusTrait();
+    }
+    private void ShowBonusTrait()
+    {
+        if (gamePlayController.championTypeCount != null)
         {
             int i = 0;
             foreach (KeyValuePair<ChampionType, int> m in gamePlayController.championTypeCount)
             {
-                //Now you can access the key and value both separately from this attachStat as:
                 GameObject bonusUI = bonusTraitPanel[i];
-                bonusUI.transform.SetParent(BonusContainer.transform);
+                bonusUI.transform.SetParent(bonusContainer.transform);
                 TraitBonusUI traitBonusUI = bonusUI.GetComponent<TraitBonusUI>();
 
                 traitBonusUI.icon.sprite = m.Key.icon;
@@ -89,49 +101,39 @@ public class UIController : MonoBehaviour
                 traitBonusUI.count.text = m.Value.ToString();
                 traitBonusUI.needToActivate.text = m.Value.ToString() + " / " + m.Key.championBonus.championCount.ToString();
 
-                //bonusUI.transform.Find("border").Find("icon").GetComponent<Image>().sprite = m.Key.icon;
-                //bonusUI.transform.Find("icon").GetComponent<Image>().sprite = m.Key.icon;
-                //bonusUI.transform.Find("nameTrait").GetComponent<TextMeshProUGUI>().text = m.Key.displayName;
-                //bonusUI.transform.Find("count").GetComponent<TextMeshProUGUI>().text = m.Value.ToString() + " / " + m.Key.championBonus.championCount.ToString();
-
                 bonusUI.SetActive(true);
+
 
                 i++;
             }
         }
     }
-    public void LoadShop(Champion champion,int index)
+    public void LoadShop(Champion champion, int index)
     {
-        Transform championUI = championsFrameArray[index].transform.Find("champion");
-        Transform top = championUI.Find("top");
-        Transform bottom = championUI.Find("bottom");
-        Transform type1 = top.Find("type 1");
-        Transform type2 = top.Find("type 2");
-        Transform icon1 = top.Find("icon 1");
-        Transform icon2 = top.Find("icon 2");
-        Transform cost = bottom.Find("Cost");
-        Transform name = bottom.Find("name");
+        Transform child = championsFrameArray[4 - index].transform.GetChild(0);
+        if (!child.gameObject.activeSelf)
+            child.gameObject.SetActive(true);
 
-        name.GetComponent<TextMeshProUGUI>().text = champion.ui_Name;
-        cost.GetComponent<TextMeshProUGUI>().text = champion.cost.ToString();
-        championUI.GetComponent<Image>().sprite = champion.display_cost;
-        type1.GetComponent<TextMeshProUGUI>().text = champion.type1.displayName;
-        type2.GetComponent<TextMeshProUGUI>().text = champion.type2.displayName;
-        icon1.GetComponent<Image>().sprite = champion.type1.icon;
-        icon2.GetComponent<Image>().sprite = champion.type2.icon;
+        ChampionShopUI championShopUI = championsFrameArray[4 - index].GetComponentInChildren<ChampionShopUI>();
+        championShopUI.gameObject.SetActive(true);
 
+        championShopUI.championImage.sprite = champion.display_cost;
+        championShopUI.nameText.text = champion.ui_Name;
+        championShopUI.costText.text = champion.cost.ToString();
+        championShopUI.type1.text = champion.type1.displayName;
+        championShopUI.type2.text = champion.type2.displayName;
+        championShopUI.Icon1.sprite = champion.type1.icon;
+        championShopUI.Icon2.sprite = champion.type2.icon;
+
+        
     }
-    public void ShowShopItems()
+    public void ShowChampionFrame(int index)
     {
-        //unhide all champion frames
-        for(int i=0; i < championsFrameArray.Length; i++)
-        {
-            championsFrameArray[i].transform.Find("champion").gameObject.SetActive(true);
-        }
+       championsFrameArray[4 - index].transform.Find("champion").gameObject.SetActive(true);
     }
     public void HideChampionFrame(int index)
     {
-        championsFrameArray[index].transform.Find("champion").gameObject.SetActive(false);
+        championsFrameArray[4 - index].transform.Find("champion").gameObject.SetActive(false);
     }
     public void Refresh_Click()
     {
@@ -141,5 +143,59 @@ public class UIController : MonoBehaviour
     {
         championShop.BuyLvl();
     }
+    public void Restart_Click()
+    {
+        gamePlayController.RestartGame();
+    }
+    public void BackToModeGame_Click()
+    {
+        SceneManager.LoadScene("ModeGame");
+    }
+    public void OnChampionClicked()
+    {
+        string name = EventSystem.current.currentSelectedGameObject.transform.parent.name;
 
+        string defaultName = "champion container ";
+        int championFrameIndex = int.Parse(name.Substring(defaultName.Length, 1));
+        championShop.OnChampionFrameClicked(championFrameIndex);
+
+    }
+    public void ShowGameScreen()
+    {
+        SetActive(true);
+        shop.SetActive(true);
+        gold.SetActive(true);
+
+        restartButton.SetActive(false);
+
+    }
+    public void ShowLoseScreen()
+    {
+        SetActive(false);
+        shop.SetActive(false);
+        gold.SetActive(false);
+        loseStreakUI.SetActive(false);
+        winStreakUI.SetActive(false);
+
+        restartButton.SetActive(true);
+    }
+
+    public void SetShopInitialState()
+    {
+        shopPanel.SetActive(true);
+        sellPanel.SetActive(false);
+    }
+
+    
+    public void SetShopSellState()
+    {
+        shopPanel.SetActive(false);
+        sellPanel.SetActive(true);
+    }
+    
+    public void SetShopBuyState()
+    {
+        shopPanel.SetActive(true);
+        sellPanel.SetActive(false);
+    }
 }

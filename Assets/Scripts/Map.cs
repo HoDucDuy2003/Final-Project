@@ -173,7 +173,6 @@ public class Map : MonoBehaviour
         }
     }
 
-
     // Get a point with accurate y axis
     public Vector3 GetMapHitPoint(Vector3 p)
     {

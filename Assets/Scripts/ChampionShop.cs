@@ -30,31 +30,33 @@ public class ChampionShop : MonoBehaviour
         //InitializeChampionPool();
         RefreshShop(true);
     }
+    public Champion[] GenerateShop(int playerLevel)
+    {
+        Champion[] shopSlots = new Champion[5];
+        for (int i = 0; i < 5; i++)
+        {
+            shopSlots[i] = GetRandomChampionInfo();     
+        }
+        return shopSlots;
+    }
     public void RefreshShop(bool isFree)
     {
         if (gamePlayController.currentGold < 2 && isFree == false)
             return;
 
-        availableChampionArray = new Champion[5];
+        availableChampionArray = GenerateShop(gamePlayController.currentChampionLimit);
 
-        for(int i = 0; i < availableChampionArray.Length; i++)
+        for (int i = 0; i < availableChampionArray.Length; i++)
         {
-            Champion champion = GetRandomChampionInfo();
-
-            /*if (champion == null) // Nếu không còn tướng để chọn
+            Champion champion = availableChampionArray[i];
+            if (champion != null)
             {
-                uiController.HideChampionFrame(i);
-                continue;
-            }*/
-
-            availableChampionArray[i] = champion;
-
-            uiController.LoadShop(champion,i);
-
-            uiController.ShowShopItems();
-
-            //if (championPool.ContainsKey(champion)) championPool[champion]--;
+                uiController.LoadShop(champion, i);
+                uiController.ShowChampionFrame(i);
+            }
         }
+       
+
         if (!isFree)
         {
             gamePlayController.currentGold -= 2;
@@ -64,10 +66,23 @@ public class ChampionShop : MonoBehaviour
     }
     public void OnChampionFrameClicked(int index)
     {
-        bool isSuccess = gamePlayController.BuyChampionFromShop(availableChampionArray[index]);
+        Champion selectedChampion = BuyChampion(index, availableChampionArray);
+        if (selectedChampion != null)
+        {
+            bool isSuccess = gamePlayController.BuyChampionFromShop(selectedChampion);
+            if (isSuccess)
+                uiController.HideChampionFrame(index);
+               
+        }
 
-        if (isSuccess)
-            uiController.HideChampionFrame(index);
+    }
+    public Champion BuyChampion(int slotIndex, Champion[] shopSlots)
+    {
+        if (slotIndex >= 0 && slotIndex < shopSlots.Length && shopSlots[slotIndex] != null)
+        {
+            return shopSlots[slotIndex]; 
+        }
+        return null; 
     }
     public Champion GetRandomChampionInfo()
     {
@@ -99,6 +114,7 @@ public class ChampionShop : MonoBehaviour
 
         return gameData.championArray[rand];
     }
+
     private int GetRandomTier(float[] probabilities)
     {
         float randomValue = Random.Range(0f, 1f);

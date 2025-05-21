@@ -11,4 +11,5 @@ public class ChampionType : ScriptableObject
 
     public ChampionBonus championBonus;
 
+    public string Description;
 }

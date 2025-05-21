@@ -1,4 +1,4 @@
-
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,7 +23,7 @@ public class ChampionController : MonoBehaviour
 
     [HideInInspector]
     //The level of the champion
-    public int lvl = 1;
+    public int currentStar = 1;
     [HideInInspector]
     public float maxHealth = 0;
 
@@ -56,7 +56,8 @@ public class ChampionController : MonoBehaviour
     private float stunTimer = 0;
 
     private GameObject target;
-    private List<Effect> effects;
+    [HideInInspector]
+    public List<Effect> effects;
 
 
     private void Update()
@@ -148,12 +149,23 @@ public class ChampionController : MonoBehaviour
         // disable agent
         navMeshAgent.enabled = false;
 
-        maxHealth = champion.health;
-        currentHealth = champion.health;
-        currentDamage = champion.attackDamage;
+        if (currentStar > 0 && currentStar <= champion.maxStarLevel && champion.starLevelStats.Length >= currentStar)
+        {
+            maxHealth = champion.starLevelStats[currentStar - 1].health;
+            currentHealth = champion.starLevelStats[currentStar - 1].health;
+            currentDamage = champion.starLevelStats[currentStar - 1].attackDamage;
+        }
+        else
+        {
+            Debug.LogError($"Invalid level {currentStar} or starLevelStats not configured for champion {champion.ui_Name}");
+            maxHealth = 100f; 
+            currentHealth = 100f;
+            currentDamage = 10f;
+        }
 
         worldsCanvasController.AddHealthBar(this.gameObject);
-
+        if(_teamID == TEAM_PLAYER)
+            SFXManager.instance.PlaySFX(champion.SfxSettings.initSFX, this.transform);
 
         effects = new List<Effect>();
     }
@@ -161,8 +173,9 @@ public class ChampionController : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        maxHealth = champion.health * lvl;
-        currentHealth = champion.health * lvl;
+        maxHealth = champion.starLevelStats[currentStar - 1].health;
+        currentHealth = champion.starLevelStats[currentStar - 1].health;
+        currentDamage = champion.starLevelStats[currentStar - 1].attackDamage;
         isDead = false;
         isInCombat = false;
         target = null;
@@ -346,19 +359,29 @@ public class ChampionController : MonoBehaviour
     }
     public void UpgradeLevel()
     {
-        lvl++;
-
+        if (currentStar >= champion.maxStarLevel)
+        {
+            Debug.LogWarning($"Champion {champion.ui_Name} is already at max level ({champion.maxStarLevel})");
+            return;
+        }
+        currentStar++;
+        if (currentStar > 0 && currentStar <= champion.maxStarLevel && champion.starLevelStats.Length >= currentStar)
+        {
+            maxHealth = champion.starLevelStats[currentStar - 1].health;
+            currentHealth = champion.starLevelStats[currentStar - 1].health;
+            currentDamage = champion.starLevelStats[currentStar - 1].attackDamage;
+        }
+        else
+        {
+            Debug.LogError($"Invalid level {currentStar} or starLevelStats not configured for champion {champion.ui_Name}");
+            maxHealth = 100f;
+            currentHealth = 100f;
+            currentDamage = 10f;
+        }
         float newSize = 1;
 
-        if (lvl == 2)
-        {
-            newSize = 1.5f;
-        }
-
-        if (lvl == 3)
-        {
-            newSize = 2.0f;
-        }
+        if (currentStar == 2) newSize = 1.5f;
+        if (currentStar == 3) newSize = 2.0f;
 
         this.transform.localScale = new Vector3(newSize, newSize, newSize);
         GameObject levelupEffect = Instantiate(levelupEffectPrefab);
@@ -368,7 +391,7 @@ public class ChampionController : MonoBehaviour
     }
     public void OnCombatStart()
     {
-        isDragged = false;
+        //isDragged = false;
 
         this.transform.position = gridTargetPosition;
 
@@ -387,6 +410,8 @@ public class ChampionController : MonoBehaviour
 
         navMeshAgent.isStopped = true;
         championAnimation.DoAttack(true);
+
+
 
 
     }
@@ -417,8 +442,8 @@ public class ChampionController : MonoBehaviour
             this.gameObject.SetActive(false);
             isDead = true;
 
-            aIEnemy.OnChampionDeath();
-            gamePlayController.OnChampionDeath();
+            aIEnemy.OnAIChampionDeath();
+            gamePlayController.OnPlayerChampionDeath();
         }
 
         worldsCanvasController.AddDamageText(this.transform.position + new Vector3(0, 2.5f, 0), d);

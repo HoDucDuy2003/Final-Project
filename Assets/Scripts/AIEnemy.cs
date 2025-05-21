@@ -1,6 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static DifficultySettings;
 
 public class AIEnemy : MonoBehaviour
 {
@@ -14,9 +15,28 @@ public class AIEnemy : MonoBehaviour
     public Dictionary<ChampionType, int> championTypeCount;
     public List<ChampionBonus> activeBonusList;
 
-    ///The damage that player takes when losing a round
-    public int TakeDamageWhenLose = 2;
+    private DifficultySettings.DifficultyLevel currentDifficultyLevel; 
+    private DifficultyConfig currentDifficulty;
 
+    private void Awake()
+    {
+        string difficultyStr = PlayerPrefs.GetString("Difficulty", DifficultySettings.DifficultyLevel.Normal.ToString());
+        if (!System.Enum.TryParse(difficultyStr, out currentDifficultyLevel))
+        {
+            currentDifficultyLevel = DifficultySettings.DifficultyLevel.Normal;
+            Debug.LogWarning("Invalid difficulty in PlayerPrefs, defaulting to Normal.");
+        }
+
+        if (DifficultySettings.instance != null)
+        {
+            currentDifficulty = DifficultySettings.instance.GetConfig(currentDifficultyLevel);
+        }
+        else
+        {
+            Debug.LogError("DifficultySettings instance is not available!");
+            currentDifficulty = new DifficultyConfig();
+        }
+    }
     public void OnMapReady()
     {
         gridChampionsArray = new GameObject[Map.hexMapSizeX, Map.hexMapSizeZ / 2];
@@ -43,6 +63,8 @@ public class AIEnemy : MonoBehaviour
         }
         if(stage == GameStage.Combat)
         {
+            // total damage player to take
+            int totalDamage = 0;
             for(int x = 0; x < Map.hexMapSizeX; x++)
             {
                 for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
@@ -51,12 +73,13 @@ public class AIEnemy : MonoBehaviour
                     {
                         ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
 
-                        Debug.Log("Champion " + championController.champion.name + " is attacking");
+                        if (championController.currentHealth > 0) totalDamage += currentDifficulty.damageWhenPlayerLose;
+                       
                     }
                 }
             }
 
-            
+            gamePlayController.TakeDamage(totalDamage);
             ResetChampions();
             AddRandomChampion();
         }
@@ -116,9 +139,9 @@ public class AIEnemy : MonoBehaviour
                     //check if is the same type of champion that we are buying
                     if (cc.champion == champion)
                     {
-                        if (cc.lvl == 1)
+                        if (cc.currentStar == 1)
                             championList_lvl_1.Add(cc);
-                        else if (cc.lvl == 2)
+                        else if (cc.currentStar == 2)
                             championList_lvl_2.Add(cc);
                     }
                 }
@@ -155,10 +178,8 @@ public class AIEnemy : MonoBehaviour
         {
             for (int z = 0; z < Map.hexMapSizeZ / 2; z++)
             {
-                //there is a champion
                 if (gridChampionsArray[x, z] != null)
                 {
-                    //get character
                     ChampionController championController = gridChampionsArray[x, z].GetComponent<ChampionController>();
 
                     Destroy(championController.gameObject);
@@ -190,7 +211,9 @@ public class AIEnemy : MonoBehaviour
             }
         }
     }
-    public void OnChampionDeath()
+
+
+    public void OnAIChampionDeath()
     {
         bool allDead = IsAllChampionDeath();
         if (allDead)

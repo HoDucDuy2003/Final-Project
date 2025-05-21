@@ -8,4 +8,6 @@ public class GameData : MonoBehaviour
     public Champion[] championArray;
     //Store all available championTypes, all champions must be assigned from the Editor to the Script GameObject
     public ChampionType[] championTypesArray;
+
+    //public DifficultySettings difficultySettings;
 }
